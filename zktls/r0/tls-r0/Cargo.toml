@@ -1,5 +1,5 @@
 [package]
-name = "tls-r0"
+name = "zktls-r0"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,8 +9,8 @@ edition = "2021"
 risc0-zkvm = { version = "1.1.2", features = ["std"], default-features = false }
 risc0-zkvm-platform = { version = "1.1.2", features = ["sys-getenv"] }
 
-t3zktls-core = { path = "../../../core" }
-t3zktls-program-tls = { path = "../../libs/tls" }
+t3zktls-core = { git = "https://github.com/the3cloud/zktls.git", branch = "feat-split-program" }
+t3zktls-program-tls = { path = "../../../crates/tls" }
 
 [patch.crates-io]
 sha2 = { git = "https://github.com/risc0/RustCrypto-hashes", tag = "sha2-v0.10.8-risczero.0" }

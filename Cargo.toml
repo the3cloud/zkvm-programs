@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 
-members = ["crates/*"]
-exclude = ["zktls/*"]
+members = ["crates/*", "zktls/r0"]
+exclude = ["zktls/sp1"]
 
 [workspace.package]
 edition = "2021"
