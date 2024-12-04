@@ -10,7 +10,6 @@ pub fn entry(input: &[u8]) -> Vec<u8> {
 }
 
 pub fn entry_input(input: GuestInput) -> Vec<u8> {
-    // println!("input: {:?}", input);
     let GuestOutput {
         response_data,
         request_hash,
