@@ -1,5 +1,5 @@
 use alloy::sol_types::SolValue;
-use t3zktls_core::{GuestInput, GuestOutput};
+use t3zktls_program_core::{GuestInput, GuestOutput};
 
 use crate::request;
 

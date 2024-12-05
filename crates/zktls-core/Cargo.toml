@@ -1,0 +1,13 @@
+[package]
+name = "t3zktls-program-core"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+log = { workspace = true }
+serde = { workspace = true }
+
+alloy = { workspace = true, features = ["sol-types"] }
+
+[dev-dependencies]
+env_logger = { workspace = true }
