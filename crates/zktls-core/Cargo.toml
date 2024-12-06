@@ -8,6 +8,7 @@ log = { workspace = true }
 serde = { workspace = true }
 
 alloy = { workspace = true, features = ["sol-types"] }
+hex = "0.4.3"
 
 [dev-dependencies]
 env_logger = { workspace = true }
