@@ -9,7 +9,7 @@ edition = "2021"
 risc0-zkvm = { version = "1.1.2", features = ["std"], default-features = false }
 risc0-zkvm-platform = { version = "1.1.2", features = ["sys-getenv"] }
 
-t3zktls-core = { git = "https://github.com/the3cloud/zktls.git", branch = "feat-split-program" }
+t3zktls-program-core = { path = "../../../crates/zktls-core" }
 t3zktls-program-tls = { path = "../../../crates/tls" }
 
 [patch.crates-io]

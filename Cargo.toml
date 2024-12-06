@@ -1,7 +1,12 @@
 [workspace]
 resolver = "2"
 
-members = ["crates/zktls-core", "crates/replayable-tls", "crates/tls"]
+members = [
+    "crates/zktls-core",
+    "crates/replayable-tls",
+    "crates/tls",
+    "zktls/r0",
+]
 # members = ["crates/zktls-core", "crates/replayable-tls"]
 exclude = ["zktls/sp1"]
 
