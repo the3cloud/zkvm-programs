@@ -74,16 +74,10 @@ mod tests {
 
         let hash = request_light.hash().unwrap();
 
-        // assert_eq!(
-        //     hash,
-        //     B256::from_hex("0x5621772e4a5d88d4b8144d4621ecaebc9b44e5f53c8ef1f95c15525b804dc19b")
-        //         .unwrap()
-        // );
-
-        // assert_eq!(
-        //     request_light.hash().unwrap(),
-        //     B256::from_hex("0x0000000000000000000000000000000000000000000000000000000000000000")
-        //         .unwrap()
-        // );
+        assert_eq!(
+            hash,
+            B256::from_hex("0x5621772e4a5d88d4b8144d4621ecaebc9b44e5f53c8ef1f95c15525b804dc19b")
+                .unwrap()
+        );
     }
 }
