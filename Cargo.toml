@@ -5,10 +5,10 @@ members = [
     "crates/zktls-core",
     "crates/replayable-tls",
     "crates/tls",
-    "zktls/r0",
+    "zktls/sp1",
 ]
 # members = ["crates/zktls-core", "crates/replayable-tls"]
-exclude = ["zktls/sp1"]
+exclude = ["zktls/r0"]
 
 [workspace.package]
 edition = "2021"

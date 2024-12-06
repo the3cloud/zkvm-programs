@@ -3,8 +3,6 @@ name = "zktls-sp1"
 version = "0.1.0"
 edition = "2021"
 
-[workspace]
-
 [dependencies]
 t3zktls-program-tls = { version = "0.1.0", path = "../../crates/tls" }
 
