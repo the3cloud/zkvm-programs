@@ -13,5 +13,5 @@ rand_core.workspace = true
 bytes.workspace = true
 log.workspace = true
 
-t3zktls-core.workspace = true
+t3zktls-program-core.workspace = true
 

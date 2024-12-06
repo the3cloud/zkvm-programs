@@ -1,9 +1,9 @@
 use std::io::{Read, Result, Write};
 
-use t3zktls_core::TypedData;
+use t3zktls_program_core::TypedPacket;
 
 pub struct ReplayStream {
-    replay_data: Vec<TypedData>,
+    replay_data: Vec<TypedPacket>,
     offset: usize,
 }
 
@@ -13,11 +13,11 @@ impl ReplayStream {
         let mut replay_data = Vec::new();
 
         while offset < data.len() {
-            let typed_data = TypedData::from_bytes(&data[offset..]).unwrap();
+            let typed_packet = TypedPacket::from_bytes(&data[offset..]).unwrap();
 
-            offset += typed_data.length();
+            offset += typed_packet.length();
 
-            replay_data.push(typed_data);
+            replay_data.push(typed_packet);
         }
 
         ReplayStream {
@@ -32,7 +32,7 @@ impl Read for ReplayStream {
         let data = &self.replay_data[self.offset];
 
         match data {
-            TypedData::Incoming(data) => {
+            TypedPacket::Incoming(data) => {
                 let length = data.len();
 
                 buf[..length].copy_from_slice(data);
@@ -40,7 +40,7 @@ impl Read for ReplayStream {
                 self.offset += 1;
                 Ok(length)
             }
-            TypedData::Outgoing(_data) => {
+            TypedPacket::Outgoing(_data) => {
                 panic!("Outgoing data not supported");
             }
         }
@@ -52,12 +52,12 @@ impl Write for ReplayStream {
         let data = &self.replay_data[self.offset];
 
         match data {
-            TypedData::Outgoing(data) => {
+            TypedPacket::Outgoing(data) => {
                 let length = data.len();
                 self.offset += 1;
                 Ok(length)
             }
-            TypedData::Incoming(_data) => {
+            TypedPacket::Incoming(_data) => {
                 panic!("Incoming data not supported");
             }
         }
