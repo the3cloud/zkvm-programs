@@ -11,6 +11,9 @@ pub use error::*;
 mod guest_output;
 pub use guest_output::*;
 
+mod guest_input;
+pub use guest_input::*;
+
 mod request;
 pub use request::*;
 

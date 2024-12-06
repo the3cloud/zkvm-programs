@@ -6,8 +6,9 @@ version.workspace = true
 [dependencies]
 log = { workspace = true }
 serde = { workspace = true }
+serde_bytes = { workspace = true }
 
-alloy = { workspace = true, features = ["sol-types"] }
+alloy = { workspace = true, features = ["serde", "sol-types"] }
 hex = "0.4.3"
 
 [dev-dependencies]
