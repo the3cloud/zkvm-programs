@@ -1,0 +1,7 @@
+[package]
+name = "compute-vkey"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+sp1-sdk = "3.4.0"

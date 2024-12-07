@@ -6,6 +6,8 @@ members = [
     "crates/replayable-tls",
     "crates/tls",
     "zktls/sp1",
+    "crates/compute-vkey",
+    "crates/compute-imageid",
 ]
 # members = ["crates/zktls-core", "crates/replayable-tls"]
 exclude = ["zktls/r0"]
