@@ -9,7 +9,6 @@ members = [
     "crates/compute-vkey",
     "crates/compute-imageid",
 ]
-# members = ["crates/zktls-core", "crates/replayable-tls"]
 exclude = ["zktls/r0"]
 
 [workspace.package]
