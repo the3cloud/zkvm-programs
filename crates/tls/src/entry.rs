@@ -1,5 +1,4 @@
-use alloy::sol_types::SolValue;
-use t3zktls_program_core::{GuestInput, GuestOutput};
+use t3zktls_program_core::GuestInput;
 
 use crate::request;
 
@@ -10,12 +9,7 @@ pub fn entry(input: &[u8]) -> Vec<u8> {
 }
 
 pub fn entry_input(input: GuestInput) -> Vec<u8> {
-    let GuestOutput {
-        response_data,
-        request_hash,
-    } = request::execute(input.request, input.request_template, input.response);
-
-    (request_hash, response_data).abi_encode()
+    request::execute(input.request, input.response)
 }
 
 #[cfg(test)]

@@ -23,7 +23,5 @@ pub struct GuestInputResponse {
 pub struct GuestInput {
     #[serde(with = "serde_bytes")]
     pub request: Vec<u8>,
-    #[serde(with = "serde_bytes")]
-    pub request_template: Vec<u8>,
     pub response: GuestInputResponse,
 }

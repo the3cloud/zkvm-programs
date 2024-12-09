@@ -5,14 +5,10 @@ use std::{
 
 use alloy::sol_types::SolValue;
 use rustls::{ClientConfig, ClientConnection, RootCertStore};
-use t3zktls_program_core::{GuestInputResponse, GuestOutput, RequestFull, RequestLight};
+use t3zktls_program_core::{GuestInputResponse, RequestFull};
 use t3zktls_replayable_tls::{crypto_provider, set_random, ReplayStream, ReplayTimeProvider};
 
-pub fn execute(
-    request: Vec<u8>,
-    request_template: Vec<u8>,
-    response: GuestInputResponse,
-) -> GuestOutput {
+pub fn execute(request: Vec<u8>, response: GuestInputResponse) -> Vec<u8> {
     let mut stream = ReplayStream::new(response.stream.clone());
     let time_provider = ReplayTimeProvider::new(&response.time);
     set_random(response.random);
@@ -30,8 +26,7 @@ pub fn execute(
             .with_root_certificates(root_store)
             .with_no_client_auth();
 
-    let request_data =
-        RequestFull::decode(&request, request_template).expect("Failed to decode request");
+    let request_data = RequestFull::decode(&request).expect("Failed to decode request");
 
     let server_name = String::from(&request_data.server_name)
         .try_into()
@@ -42,7 +37,7 @@ pub fn execute(
 
     let mut tls = rustls::Stream::new(&mut tls_stream, &mut stream);
 
-    let request_data = request_data.data().expect("Failed to get request data");
+    let request_data = request_data.request;
 
     tls.write_all(&request_data).expect("Failed to write data");
 
@@ -52,18 +47,8 @@ pub fn execute(
     let mut serialized_request = Vec::new();
     ciborium::into_writer(&request, &mut serialized_request).expect("Failed to serialize request");
 
-    let request_data_lite = RequestLight::decode(&request_data).unwrap();
-
-    let request_hash = request_data_lite
-        .hash()
-        .expect("Failed to get request hash");
-
     // TODO: Match response in buf;
-
     let response_data = response.filtered_responses.abi_encode();
 
-    GuestOutput {
-        response_data,
-        request_hash: request_hash.into(),
-    }
+    response_data
 }
