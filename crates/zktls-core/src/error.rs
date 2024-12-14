@@ -1,11 +1,14 @@
 use core::fmt::{self, Display};
 
-#[derive(Debug)]
+use thiserror::Error;
+
+#[derive(Debug, Error)]
 pub enum Error {
     InvalidForwardValue,
     TryFromSliceError,
     InvalidBytesLength,
-    AlloySolTypesError(alloy::sol_types::Error),
+    SignatureError(alloy::primitives::SignatureError),
+    AlloySolError(alloy::sol_types::Error),
 }
 
 impl Display for Error {

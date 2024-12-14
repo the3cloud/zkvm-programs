@@ -1,6 +1,7 @@
-use alloc::{string::String, vec::Vec};
 use alloy::primitives::Bytes;
 use serde::{Deserialize, Serialize};
+
+use crate::Request;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GuestInputResponse {
@@ -21,7 +22,6 @@ pub struct GuestInputResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GuestInput {
-    #[serde(with = "serde_bytes")]
-    pub request: Vec<u8>,
+    pub request: Request,
     pub response: GuestInputResponse,
 }

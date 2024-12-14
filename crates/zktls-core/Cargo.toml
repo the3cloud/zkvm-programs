@@ -8,8 +8,10 @@ log = { workspace = true }
 serde = { workspace = true }
 serde_bytes = { workspace = true }
 
-alloy = { workspace = true, features = ["serde", "sol-types"] }
-hex = "0.4.3"
+alloy = { workspace = true, features = ["serde", "k256", "sol-types"] }
+
+thiserror = { workspace = true }
 
 [dev-dependencies]
 env_logger = { workspace = true }
+serde_json = { workspace = true }

@@ -13,10 +13,7 @@ rustls-rustcrypto = { workspace = true }
 
 ciborium = { workspace = true }
 
-sha2.workspace = true
-
 alloy = { workspace = true, features = ["sol-types"] }
-
 
 [dev-dependencies]
 env_logger = { workspace = true }

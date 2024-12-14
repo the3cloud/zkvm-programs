@@ -1,7 +1,3 @@
-#![no_std]
-
-extern crate alloc;
-
 mod tls;
 pub use tls::*;
 
@@ -13,3 +9,6 @@ pub use guest_input::*;
 
 mod request;
 pub use request::*;
+
+mod origin;
+pub use origin::*;

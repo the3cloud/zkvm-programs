@@ -1,5 +1,3 @@
-use alloc::vec::Vec;
-
 use crate::{Error, Result};
 
 #[derive(Debug, PartialEq, Eq)]
@@ -70,8 +68,6 @@ impl TypedPacket {
 
 #[cfg(test)]
 mod tests {
-    use alloc::vec::Vec;
-
     use crate::TypedPacket;
 
     #[test]

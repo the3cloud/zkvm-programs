@@ -9,7 +9,9 @@ pub fn entry(input: &[u8]) -> Vec<u8> {
 }
 
 pub fn entry_input(input: GuestInput) -> Vec<u8> {
-    request::execute(input.request, input.response)
+    let res = request::execute(input.request, input.response);
+
+    res.abi_encode()
 }
 
 #[cfg(test)]

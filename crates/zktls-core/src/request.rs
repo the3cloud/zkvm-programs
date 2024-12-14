@@ -1,108 +1,175 @@
-use alloc::{string::String, vec::Vec};
 use alloy::{
-    primitives::{Bytes, U256},
+    primitives::{keccak256, Address, Bytes, B256},
     sol_types::SolValue,
 };
+use serde::{Deserialize, Serialize};
 
-use crate::{Error, Result};
+use crate::{Origin, Result};
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct RequestFull {
-    pub encrypted_offset: U256,
-    pub fields: Vec<u64>,
-    pub values: Vec<Bytes>,
-    pub remote: String,
-    pub server_name: String,
-    pub request: Bytes,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type")]
+#[serde(rename_all = "camelCase")]
+pub enum ResponseTemplate {
+    Offset { begin: u64, length: u64 },
+    Regex { pattern: String },
 }
 
-impl RequestFull {
-    pub fn encode(self) -> Vec<u8> {
+impl ResponseTemplate {
+    pub fn as_bytes(&self) -> Vec<u8> {
+        match self {
+            ResponseTemplate::Offset { begin, length } => {
+                let mut res = Vec::new();
+                res.push(0u8);
+                res.push(1u8);
+                res.extend_from_slice(&begin.to_be_bytes());
+                res.extend_from_slice(&length.to_be_bytes());
+                res
+            }
+            ResponseTemplate::Regex { pattern } => {
+                let mut res = Vec::new();
+                res.push(0u8);
+                res.push(2u8);
+                res.push(pattern.len() as u8);
+                res.extend_from_slice(pattern.as_bytes());
+                res
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RequestClient {
+    pub client: Address,
+    pub max_gas_price: u64,
+    pub max_gas_limit: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Request {
+    pub request: Bytes,
+    pub remote_addr: String,
+    pub server_name: String,
+    pub response_template: Vec<ResponseTemplate>,
+    pub origin: Origin,
+    pub client: RequestClient,
+}
+
+impl Request {
+    pub fn set_apikey_salt(&mut self, salt: B256) {
+        if let Origin::ApiKey(f) = &mut self.origin {
+            f.salt = salt;
+        }
+    }
+
+    fn request_hash(&self) -> B256 {
+        let mut hasher = alloy::primitives::Keccak256::new();
+
+        hasher.update(&self.request);
+        hasher.update(self.remote_addr.as_bytes());
+        hasher.update(self.server_name.as_bytes());
+
+        for template in &self.response_template {
+            hasher.update(template.as_bytes());
+        }
+
+        let mut hash = [0u8; 32];
+        hash.copy_from_slice(hasher.finalize().as_slice());
+
+        hash.into()
+    }
+
+    fn apikey_request_id(&self) -> Result<B256> {
+        let request_hash = self.request_hash();
+
+        let mut res = Vec::with_capacity(20 + 32 + 8);
+
+        res.extend_from_slice(self.dapp()?.as_slice());
+        res.extend_from_slice(request_hash.as_slice());
+        res.extend_from_slice(&self.origin.nonce().to_be_bytes());
+
+        Ok(keccak256(&res))
+    }
+
+    fn secp256k1_request_id(&self) -> Result<B256> {
+        let mut res = Vec::with_capacity(20 + 8);
+
+        res.extend_from_slice(self.dapp()?.as_slice());
+        res.extend_from_slice(&self.origin.nonce().to_be_bytes());
+
+        Ok(keccak256(&res))
+    }
+
+    pub fn request_id(&self) -> Result<B256> {
+        match &self.origin {
+            Origin::ApiKey(_) => self.apikey_request_id(),
+            Origin::Secp256k1(_) => self.secp256k1_request_id(),
+        }
+    }
+
+    pub fn dapp(&self) -> Result<B256> {
+        let res = match &self.origin {
+            Origin::ApiKey(f) => f.dapp(),
+            Origin::Secp256k1(f) => f.dapp(self.request_hash())?,
+        };
+
+        Ok(res)
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Response {
+    #[serde(with = "serde_bytes")]
+    pub response: Vec<u8>,
+    pub request_id: B256,
+    pub client: Address,
+    pub dapp: B256,
+    pub max_gas_price: u64,
+    pub max_gas_limit: u64,
+    #[serde(with = "serde_bytes")]
+    pub proof: Vec<u8>,
+    #[serde(default)]
+    pub prover_id: Address,
+}
+
+impl Response {
+    pub fn from_request(request: &Request, response: Vec<u8>) -> Result<Self> {
+        Ok(Self {
+            response,
+            request_id: request.request_id()?,
+            client: request.client.client,
+            dapp: request.dapp()?,
+            max_gas_price: request.client.max_gas_price,
+            max_gas_limit: request.client.max_gas_limit,
+            proof: Default::default(),
+            prover_id: Default::default(),
+        })
+    }
+
+    pub fn abi_encode(self) -> Vec<u8> {
         (
-            self.encrypted_offset,
-            self.fields,
-            self.values,
-            self.remote,
-            self.server_name,
-            self.request,
+            self.request_id,
+            self.client,
+            self.dapp,
+            self.max_gas_price,
+            self.max_gas_limit,
+            self.response,
         )
             .abi_encode_sequence()
     }
-
-    pub fn decode(bytes: &[u8]) -> Result<Self> {
-        type StructType = (U256, Vec<u64>, Vec<Bytes>, String, String, Bytes);
-
-        let (encrypted_offset, fields, values, remote, server_name, request) =
-            StructType::abi_decode_sequence(&bytes, true).map_err(Error::AlloySolTypesError)?;
-
-        Ok(Self {
-            encrypted_offset,
-            fields,
-            values,
-            remote,
-            server_name,
-            request,
-        })
-    }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use alloy::hex::FromHex;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//     use super::*;
+    #[test]
+    fn test_request_id() {
+        extern crate std;
 
-//     #[test]
-//     fn test_encode_decode() {
-//         let request_data = RequestFull {
-//             encrypted_offset: U256::ZERO,
-//             fields: Vec::from([0, 1, 2]),
-//             values: Vec::from([Bytes::from("hello"), Bytes::from("world")]),
-//             remote: "hello".into(),
-//             server_name: "world".into(),
-//             request_template_hash: B256::ZERO,
-//             request_template: Vec::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-//         };
+        let request_s = include_str!("../testdata/request.json");
 
-//         let encoded = request_data.clone().encode();
-//         let decoded = RequestFull::decode(&encoded, request_data.request_template.clone()).unwrap();
+        let request: Request = serde_json::from_str(request_s).unwrap();
 
-//         assert_eq!(request_data, decoded);
-//     }
-
-//     #[test]
-//     fn test_hash() {
-//         let request_data = RequestFull::decode(
-//             &Bytes::from_hex(include_str!("../testdata/request_data.txt")).unwrap(),
-//             Vec::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-//         )
-//         .unwrap();
-
-//         assert_eq!(
-//             request_data,
-//             RequestFull {
-//                 encrypted_offset: U256::from(1),
-//                 fields: Vec::from([1]),
-//                 values: Vec::from([Bytes::from(b"123")]),
-//                 remote: "hello".into(),
-//                 server_name: "world".into(),
-//                 request_template_hash: B256::ZERO,
-//                 request_template: Vec::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-//             }
-//         );
-//     }
-
-//     #[test]
-//     fn test_data() {
-//         let request_data = RequestFull::decode(
-//             &Bytes::from_hex(include_str!("../testdata/request_data.txt")).unwrap(),
-//             Vec::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-//         )
-//         .unwrap();
-
-//         assert_eq!(
-//             request_data.data().unwrap(),
-//             Vec::from([0, 49, 50, 51, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-//         );
-//     }
-// }
+        std::println!("{:?}", request);
+    }
+}
