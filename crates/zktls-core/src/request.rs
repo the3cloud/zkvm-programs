@@ -128,7 +128,7 @@ pub struct Response {
     #[serde(with = "serde_bytes")]
     pub proof: Vec<u8>,
     #[serde(default)]
-    pub prover_id: Address,
+    pub prover_id: B256,
 }
 
 impl Response {
