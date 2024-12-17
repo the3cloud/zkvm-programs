@@ -45,8 +45,7 @@ impl Secp256k1Origin {
 
         let bytes = address.to_sec1_bytes();
 
-        let mut bb = [0u8; 32];
-        bb.copy_from_slice(&bytes[1..33]);
+        let bb = keccak256(bytes);
 
         Ok(B256::from(bb))
     }

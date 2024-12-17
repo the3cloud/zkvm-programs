@@ -55,8 +55,10 @@ pub struct Request {
 }
 
 impl Request {
-    pub fn set_apikey_salt(&mut self, salt: B256) {
+    /// this function must be called used internal appid
+    pub fn set_appid(&mut self, appid: &[u8]) {
         if let Origin::ApiKey(f) = &mut self.origin {
+            let salt = keccak256(appid);
             f.salt = salt;
         }
     }
@@ -72,10 +74,11 @@ impl Request {
             hasher.update(template.as_bytes());
         }
 
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(hasher.finalize().as_slice());
+        hasher.update(self.client.client);
+        hasher.update(self.client.max_gas_price.to_be_bytes());
+        hasher.update(self.client.max_gas_limit.to_be_bytes());
 
-        hash.into()
+        hasher.finalize().into()
     }
 
     fn apikey_request_id(&self) -> Result<B256> {
