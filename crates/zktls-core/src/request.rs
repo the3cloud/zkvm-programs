@@ -4,7 +4,7 @@ use alloy::{
 };
 use serde::{Deserialize, Serialize};
 
-use crate::{Origin, Result};
+use crate::{Error, Origin, Result};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
@@ -88,7 +88,7 @@ impl Request {
 
         res.extend_from_slice(self.dapp()?.as_slice());
         res.extend_from_slice(request_hash.as_slice());
-        res.extend_from_slice(&self.origin.nonce().to_be_bytes());
+        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
 
         Ok(keccak256(&res))
     }
@@ -97,25 +97,25 @@ impl Request {
         let mut res = Vec::with_capacity(20 + 8);
 
         res.extend_from_slice(self.dapp()?.as_slice());
-        res.extend_from_slice(&self.origin.nonce().to_be_bytes());
+        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
 
         Ok(keccak256(&res))
     }
 
     pub fn request_id(&self) -> Result<B256> {
         match &self.origin {
+            Origin::None => Err(Error::MustSetOrigin),
             Origin::ApiKey(_) => self.apikey_request_id(),
             Origin::Secp256k1(_) => self.secp256k1_request_id(),
         }
     }
 
     pub fn dapp(&self) -> Result<B256> {
-        let res = match &self.origin {
-            Origin::ApiKey(f) => f.dapp(),
-            Origin::Secp256k1(f) => f.dapp(self.request_hash())?,
-        };
-
-        Ok(res)
+        match &self.origin {
+            Origin::None => Err(Error::MustSetOrigin),
+            Origin::ApiKey(f) => Ok(f.dapp()),
+            Origin::Secp256k1(f) => Ok(f.dapp(self.request_hash())?),
+        }
     }
 }
 

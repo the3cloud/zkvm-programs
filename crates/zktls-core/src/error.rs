@@ -1,20 +1,24 @@
-use core::fmt::{self, Display};
-
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
+    #[error("invalid forward value")]
     InvalidForwardValue,
-    TryFromSliceError,
-    InvalidBytesLength,
-    SignatureError(alloy::primitives::SignatureError),
-    AlloySolError(alloy::sol_types::Error),
-}
 
-impl Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
+    #[error("try from slice error")]
+    TryFromSliceError,
+
+    #[error("invalid bytes length")]
+    InvalidBytesLength,
+
+    #[error(transparent)]
+    SignatureError(alloy::primitives::SignatureError),
+
+    #[error(transparent)]
+    AlloySolError(alloy::sol_types::Error),
+
+    #[error("must set origin")]
+    MustSetOrigin,
 }
 
 pub type Result<T> = core::result::Result<T, Error>;
