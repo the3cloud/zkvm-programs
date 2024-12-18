@@ -55,20 +55,23 @@ impl Secp256k1Origin {
 #[serde(tag = "type")]
 #[serde(rename_all = "camelCase")]
 pub enum Origin {
+    None,
     ApiKey(ApiKeyOrigin),
     Secp256k1(Secp256k1Origin),
 }
 
 impl Origin {
-    pub fn nonce(&self) -> u64 {
+    pub fn nonce(&self) -> Result<u64> {
         match self {
-            Origin::ApiKey(ApiKeyOrigin { nonce, .. }) => *nonce,
-            Origin::Secp256k1(Secp256k1Origin { nonce, .. }) => *nonce,
+            Origin::None => Err(Error::MustSetOrigin),
+            Origin::ApiKey(ApiKeyOrigin { nonce, .. }) => Ok(*nonce),
+            Origin::Secp256k1(Secp256k1Origin { nonce, .. }) => Ok(*nonce),
         }
     }
 
     pub fn dapp(&self, hash: B256) -> Result<B256> {
         match self {
+            Origin::None => Err(Error::MustSetOrigin),
             Origin::ApiKey(e) => Ok(e.dapp()),
             Origin::Secp256k1(e) => e.dapp(hash),
         }
