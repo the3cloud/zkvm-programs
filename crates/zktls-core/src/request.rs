@@ -63,7 +63,7 @@ impl Request {
         }
     }
 
-    fn request_hash(&self) -> B256 {
+    pub fn request_hash(&self) -> B256 {
         let mut hasher = alloy::primitives::Keccak256::new();
 
         hasher.update(&self.request);
