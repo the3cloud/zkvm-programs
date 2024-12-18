@@ -19,6 +19,9 @@ pub enum Error {
 
     #[error("must set origin")]
     MustSetOrigin,
+
+    #[error("invalid normalize v value")]
+    InvalidNormalizeV,
 }
 
 pub type Result<T> = core::result::Result<T, Error>;
