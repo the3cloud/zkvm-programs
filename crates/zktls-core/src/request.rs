@@ -110,7 +110,7 @@ impl Request {
         }
     }
 
-    pub fn dapp(&self) -> Result<B256> {
+    pub fn dapp(&self) -> Result<Address> {
         match &self.origin {
             Origin::None => Err(Error::MustSetOrigin),
             Origin::ApiKey(f) => Ok(f.dapp()),
@@ -125,7 +125,7 @@ pub struct Response {
     pub response: Vec<u8>,
     pub request_id: B256,
     pub client: Address,
-    pub dapp: B256,
+    pub dapp_key: Address,
     pub max_gas_price: u64,
     pub max_gas_limit: u64,
     #[serde(with = "serde_bytes")]
@@ -140,7 +140,7 @@ impl Response {
             response,
             request_id: request.request_id()?,
             client: request.client.client,
-            dapp: request.dapp()?,
+            dapp_key: request.dapp()?,
             max_gas_price: request.client.max_gas_price,
             max_gas_limit: request.client.max_gas_limit,
             proof: Default::default(),
@@ -152,7 +152,7 @@ impl Response {
         (
             self.request_id,
             self.client,
-            self.dapp,
+            self.dapp_key,
             self.max_gas_price,
             self.max_gas_limit,
             self.response,
