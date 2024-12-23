@@ -88,7 +88,7 @@ impl Request {
 
         res.extend_from_slice(self.dapp()?.as_slice());
         res.extend_from_slice(request_hash.as_slice());
-        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
+        // res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
 
         Ok(keccak256(&res))
     }
@@ -97,7 +97,7 @@ impl Request {
         let mut res = Vec::with_capacity(20 + 8);
 
         res.extend_from_slice(self.dapp()?.as_slice());
-        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
+        res.extend_from_slice(self.request_hash().as_slice());
 
         Ok(keccak256(&res))
     }

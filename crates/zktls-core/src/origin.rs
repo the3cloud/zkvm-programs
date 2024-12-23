@@ -6,7 +6,6 @@ use crate::{Error, Result};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ApiKeyOrigin {
     pub key: B256,
-    pub nonce: u64,
     #[serde(skip)]
     pub salt: B256,
 }
@@ -30,7 +29,6 @@ impl ApiKeyOrigin {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Secp256k1Origin {
     pub signature: FixedBytes<65>,
-    pub nonce: u64,
 }
 
 impl Secp256k1Origin {
@@ -59,14 +57,6 @@ pub enum Origin {
 }
 
 impl Origin {
-    pub fn nonce(&self) -> Result<u64> {
-        match self {
-            Origin::None => Err(Error::MustSetOrigin),
-            Origin::ApiKey(ApiKeyOrigin { nonce, .. }) => Ok(*nonce),
-            Origin::Secp256k1(Secp256k1Origin { nonce, .. }) => Ok(*nonce),
-        }
-    }
-
     pub fn dapp(&self, hash: B256) -> Result<Address> {
         match self {
             Origin::None => Err(Error::MustSetOrigin),
