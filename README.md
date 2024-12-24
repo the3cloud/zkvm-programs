@@ -4,5 +4,5 @@
 
 | Runtime | Program VKey | Version | Comment |
 | ------- | ------------ | ------- | ------- |
-| RISC0 | 0x68935e2d9d29e396fa2d613fa90658d8282891d926b8447dde51cd0e2a8491ef | 0.1.0-alpha | latest |
-| SP1   | 0x002c1167a4d8dd15018ac2d333a23e21f6aeaf0e28ff93ad67926588b26fccd4 | 0.1.0-alpha | latest |
+| RISC0 | 0xa3ed786762d40e6f21f294df6457f3aeac964a3034fe55ae9900ff8c29af87d6 | 0.1.0-alpha | latest |
+| SP1   | 0x009f2fd864a8a3aef20f74a6cd4b2fc8702bfad746e683da4956138594a14b0d | 0.1.0-alpha | latest |
