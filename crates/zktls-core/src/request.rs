@@ -78,7 +78,7 @@ impl Request {
         hasher.update(self.client.max_gas_price.to_be_bytes());
         hasher.update(self.client.max_gas_limit.to_be_bytes());
 
-        hasher.finalize().into()
+        hasher.finalize()
     }
 
     fn apikey_request_id(&self) -> Result<B256> {
