@@ -5,7 +5,7 @@ members = [
     "crates/zktls-core",
     "crates/replayable-tls",
     "crates/tls",
-    "zktls/sp1",
+    # "zktls/sp1",
     "crates/compute-vkey",
     "crates/compute-imageid",
 ]

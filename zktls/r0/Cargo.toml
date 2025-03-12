@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
+members = ["../../crates/zktls-core", "../../crates/tls"]
 
 [dependencies]
 risc0-zkvm = { version = "1.1.2", features = ["std"], default-features = false }
