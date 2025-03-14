@@ -1,4 +1,4 @@
-use t3zktls_program_core::GuestInput;
+use zktls_program_core::GuestInput;
 
 use crate::request;
 

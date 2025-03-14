@@ -1,6 +1,6 @@
 use std::io::{Read, Result, Write};
 
-use t3zktls_program_core::TypedPacket;
+use zktls_program_core::TypedPacket;
 
 pub struct ReplayStream {
     replay_data: Vec<TypedPacket>,

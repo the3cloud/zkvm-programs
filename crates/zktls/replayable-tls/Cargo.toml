@@ -1,11 +1,11 @@
 [package]
-name = "t3zktls-program-tls"
+name = "zktls-program-replayable-tls"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
-t3zktls-program-core.workspace = true
-t3zktls-replayable-tls.workspace = true
+zktls-program-core.workspace = true
+zktls-replayable-tls-provider.workspace = true
 
 webpki-roots = { workspace = true }
 rustls = { workspace = true }

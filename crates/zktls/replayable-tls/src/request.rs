@@ -5,8 +5,10 @@ use std::{
 
 use alloy::sol_types::SolValue;
 use rustls::{ClientConfig, ClientConnection, RootCertStore};
-use t3zktls_program_core::{GuestInputResponse, Request, Response};
-use t3zktls_replayable_tls::{crypto_provider, set_random, ReplayStream, ReplayTimeProvider};
+use zktls_program_core::{GuestInputResponse, Request, Response};
+use zktls_replayable_tls_provider::{
+    crypto_provider, set_random, ReplayStream, ReplayTimeProvider,
+};
 
 pub fn execute(request: Request, response: GuestInputResponse) -> Response {
     let mut stream = ReplayStream::new(response.stream.to_vec());

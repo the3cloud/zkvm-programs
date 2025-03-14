@@ -1,5 +1,5 @@
 [package]
-name = "t3zktls-program-core"
+name = "zktls-program-core"
 edition.workspace = true
 version.workspace = true
 

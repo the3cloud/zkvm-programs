@@ -6802,47 +6802,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "t3zktls-program-core"
-version = "0.1.0"
-dependencies = [
- "alloy",
- "env_logger",
- "log",
- "serde",
- "serde_bytes",
- "serde_json",
- "thiserror 2.0.12",
-]
-
-[[package]]
-name = "t3zktls-program-tls"
-version = "0.1.0"
-dependencies = [
- "alloy",
- "ciborium",
- "env_logger",
- "rustls",
- "rustls-rustcrypto",
- "t3zktls-program-core",
- "t3zktls-replayable-tls",
- "webpki-roots",
-]
-
-[[package]]
-name = "t3zktls-replayable-tls"
-version = "0.1.0"
-dependencies = [
- "bytes",
- "log",
- "once_cell",
- "rand_core",
- "rustls",
- "rustls-rustcrypto",
- "t3zktls-program-core",
- "webpki-roots",
-]
-
-[[package]]
 name = "tap"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8044,4 +8003,45 @@ dependencies = [
  "sha2",
  "sha3",
  "subtle",
+]
+
+[[package]]
+name = "zktls-program-core"
+version = "0.1.0"
+dependencies = [
+ "alloy",
+ "env_logger",
+ "log",
+ "serde",
+ "serde_bytes",
+ "serde_json",
+ "thiserror 2.0.12",
+]
+
+[[package]]
+name = "zktls-program-replayable-tls"
+version = "0.1.0"
+dependencies = [
+ "alloy",
+ "ciborium",
+ "env_logger",
+ "rustls",
+ "rustls-rustcrypto",
+ "webpki-roots",
+ "zktls-program-core",
+ "zktls-replayable-tls-provider",
+]
+
+[[package]]
+name = "zktls-replayable-tls-provider"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "log",
+ "once_cell",
+ "rand_core",
+ "rustls",
+ "rustls-rustcrypto",
+ "webpki-roots",
+ "zktls-program-core",
 ]

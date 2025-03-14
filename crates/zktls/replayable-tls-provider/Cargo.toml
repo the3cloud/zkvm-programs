@@ -1,5 +1,5 @@
 [package]
-name = "t3zktls-replayable-tls"
+name = "zktls-replayable-tls-provider"
 version = "0.1.0"
 edition = "2021"
 
@@ -13,5 +13,5 @@ rand_core.workspace = true
 bytes.workspace = true
 log.workspace = true
 
-t3zktls-program-core.workspace = true
+zktls-program-core.workspace = true
 

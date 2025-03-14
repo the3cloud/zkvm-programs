@@ -2,9 +2,9 @@
 resolver = "2"
 
 members = [
-    "crates/zktls-core",
-    "crates/replayable-tls",
-    "crates/tls",
+    "crates/zktls/zktls-core",
+    "crates/zktls/replayable-tls",
+    "crates/zktls/replayable-tls-provider",
     # "zktls/sp1",
     "crates/compute-vkey",
     "crates/compute-imageid",
@@ -27,8 +27,9 @@ rustls-rustcrypto = { git = "https://github.com/the3cloud/rustls-rustcrypto.git"
 webpki-roots = "0.26.6"
 
 # t3zktls-core = { git = "https://github.com/the3cloud/zktls.git", branch = "feat-split-program" }
-t3zktls-program-core = { path = "crates/zktls-core" }
-t3zktls-replayable-tls = { version = "0.1.0", path = "crates/replayable-tls" }
+zktls-program-core = { version = "0.1.0", path = "crates/zktls/zktls-core" }
+zktls-replayable-tls = { version = "0.1.0", path = "crates/zktls/replayable-tls" }
+zktls-replayable-tls-provider = { version = "0.1.0", path = "crates/zktls/replayable-tls-provider" }
 
 alloy = "0.7"
 ciborium = "0.2.0"
