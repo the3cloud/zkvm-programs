@@ -8019,6 +8019,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "zktls-recordable-tls-provider"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "rand_core",
+ "rustls",
+ "rustls-rustcrypto",
+ "zktls-program-core",
+]
+
+[[package]]
 name = "zktls-replayable-tls"
 version = "0.1.0"
 dependencies = [

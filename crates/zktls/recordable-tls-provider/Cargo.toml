@@ -1,0 +1,13 @@
+[package]
+name = "zktls-recordable-tls-provider"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+once_cell.workspace = true
+
+rand_core.workspace = true
+rustls.workspace = true
+rustls-rustcrypto.workspace = true
+
+zktls-program-core.workspace = true
