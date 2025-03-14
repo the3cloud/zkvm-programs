@@ -1,7 +1,9 @@
 {
-    "request": "0x",
-    "remote_addr": "httpbin.org:443",
-    "server_name": "httpbin.org",
+    "request_info": {
+        "request": "0x",
+        "remote_addr": "httpbin.org:443",
+        "server_name": "httpbin.org"
+    },
     "response_template": [
         {
             "type": "offset",

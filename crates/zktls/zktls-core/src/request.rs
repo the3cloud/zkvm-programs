@@ -45,10 +45,15 @@ pub struct RequestClient {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Request {
+pub struct RequestInfo {
     pub request: Bytes,
     pub remote_addr: String,
     pub server_name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Request {
+    pub request_info: RequestInfo,
     pub response_template: Vec<ResponseTemplate>,
     pub origin: Origin,
     pub client: RequestClient,
@@ -66,9 +71,9 @@ impl Request {
     pub fn request_hash(&self) -> B256 {
         let mut hasher = alloy::primitives::Keccak256::new();
 
-        hasher.update(&self.request);
-        hasher.update(self.remote_addr.as_bytes());
-        hasher.update(self.server_name.as_bytes());
+        hasher.update(&self.request_info.request);
+        hasher.update(self.request_info.remote_addr.as_bytes());
+        hasher.update(self.request_info.server_name.as_bytes());
 
         for template in &self.response_template {
             hasher.update(template.as_bytes());

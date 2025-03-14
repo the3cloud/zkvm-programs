@@ -28,7 +28,7 @@ pub fn execute(request: Request, response: GuestInputResponse) -> Response {
             .with_root_certificates(root_store)
             .with_no_client_auth();
 
-    let server_name = String::from(&request.server_name)
+    let server_name = String::from(&request.request_info.server_name)
         .try_into()
         .expect("Failed to convert server name");
 
@@ -37,7 +37,7 @@ pub fn execute(request: Request, response: GuestInputResponse) -> Response {
 
     let mut tls = rustls::Stream::new(&mut tls_stream, &mut stream);
 
-    tls.write_all(&request.request)
+    tls.write_all(&request.request_info.request)
         .expect("Failed to write data");
 
     let mut buf = Vec::with_capacity(response.response.len());

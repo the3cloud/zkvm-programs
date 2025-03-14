@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-t3zktls-program-tls = { version = "0.1.0", path = "../../crates/tls" }
+zktls-replayable-tls = { version = "0.1.0", path = "../../crates/zktls/replayable-tls" }
 
 sp1-zkvm = "4.1.3"
 

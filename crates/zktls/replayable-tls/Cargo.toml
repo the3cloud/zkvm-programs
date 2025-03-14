@@ -1,5 +1,5 @@
 [package]
-name = "zktls-program-replayable-tls"
+name = "zktls-replayable-tls"
 version.workspace = true
 edition.workspace = true
 

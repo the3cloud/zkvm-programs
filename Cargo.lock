@@ -8019,7 +8019,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "zktls-program-replayable-tls"
+name = "zktls-replayable-tls"
 version = "0.1.0"
 dependencies = [
  "alloy",
