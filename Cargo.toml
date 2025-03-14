@@ -6,8 +6,8 @@ members = [
     "crates/zktls/replayable-tls",
     "crates/zktls/replayable-tls-provider",
     "crates/zktls/recordable-tls-provider",
-    "crates/compute-vkey",
-    "crates/compute-imageid",
+    "tools/compute-vkey",
+    "tools/compute-imageid",
 ]
 exclude = ["zktls/r0"]
 
