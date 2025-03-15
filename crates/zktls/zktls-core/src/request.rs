@@ -129,8 +129,7 @@ pub struct Response {
     pub dapp: B256,
     pub max_gas_price: u64,
     pub max_gas_limit: u64,
-    #[serde(with = "serde_bytes")]
-    pub proof: Vec<u8>,
+    pub proof: Bytes,
     #[serde(default)]
     pub prover_id: B256,
 }
