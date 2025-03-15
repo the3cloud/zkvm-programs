@@ -1,7 +1,4 @@
-use alloy::{
-    primitives::{keccak256, Address, Bytes, B256},
-    sol_types::SolValue,
-};
+use alloy::primitives::{keccak256, Address, Bytes, B256};
 use serde::{Deserialize, Serialize};
 
 use crate::{Error, Origin, Result};
@@ -126,8 +123,7 @@ impl Request {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Response {
-    #[serde(with = "serde_bytes")]
-    pub response: Vec<u8>,
+    pub response: Vec<Bytes>,
     pub request_id: B256,
     pub client: Address,
     pub dapp: B256,
@@ -140,7 +136,7 @@ pub struct Response {
 }
 
 impl Response {
-    pub fn from_request(request: &Request, response: Vec<u8>) -> Result<Self> {
+    pub fn from_request(request: &Request, response: Vec<Bytes>) -> Result<Self> {
         Ok(Self {
             response,
             request_id: request.request_id()?,
@@ -151,18 +147,6 @@ impl Response {
             proof: Default::default(),
             prover_id: Default::default(),
         })
-    }
-
-    pub fn abi_encode(self) -> Vec<u8> {
-        (
-            self.request_id,
-            self.client,
-            self.dapp,
-            self.max_gas_price,
-            self.max_gas_limit,
-            self.response,
-        )
-            .abi_encode_sequence()
     }
 }
 

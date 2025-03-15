@@ -3,7 +3,6 @@ use std::{
     sync::Arc,
 };
 
-use alloy::sol_types::SolValue;
 use rustls::{ClientConfig, ClientConnection, RootCertStore};
 use zktls_program_core::{GuestInputResponse, Request, Response};
 use zktls_replayable_tls_provider::{
@@ -48,7 +47,7 @@ pub fn execute(request: Request, response: GuestInputResponse) -> Response {
     ciborium::into_writer(&request, &mut serialized_request).expect("Failed to serialize request");
 
     // TODO: Match response in buf;
-    let response_bytes = response.filtered_responses.abi_encode();
+    let response_bytes = response.filtered_responses;
 
     Response::from_request(&request, response_bytes).unwrap()
 }
