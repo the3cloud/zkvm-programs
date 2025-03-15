@@ -1,4 +1,4 @@
-use alloy::primitives::{keccak256, Address, Bytes, B256};
+use alloy_primitives::{keccak256, Address, Bytes, B256};
 use serde::{Deserialize, Serialize};
 
 use crate::{Error, Origin, Result};
@@ -66,7 +66,7 @@ impl Request {
     }
 
     pub fn request_hash(&self) -> B256 {
-        let mut hasher = alloy::primitives::Keccak256::new();
+        let mut hasher = alloy_primitives::Keccak256::new();
 
         hasher.update(&self.request_info.request);
         hasher.update(self.request_info.remote_addr.as_bytes());

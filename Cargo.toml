@@ -31,7 +31,7 @@ zktls-program-core = { version = "0.1.0", path = "crates/zktls/zktls-core" }
 zktls-replayable-tls = { version = "0.1.0", path = "crates/zktls/replayable-tls" }
 zktls-replayable-tls-provider = { version = "0.1.0", path = "crates/zktls/replayable-tls-provider" }
 
-alloy = "0.7"
+alloy-primitives = "0.8.23"
 ciborium = "0.2.0"
 
 

@@ -1,4 +1,4 @@
-use alloy::primitives::{keccak256, normalize_v, FixedBytes, PrimitiveSignature, B256};
+use alloy_primitives::{keccak256, normalize_v, FixedBytes, PrimitiveSignature, B256};
 use serde::{Deserialize, Serialize};
 
 use crate::{Error, Result};

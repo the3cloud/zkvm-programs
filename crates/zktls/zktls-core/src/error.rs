@@ -12,10 +12,7 @@ pub enum Error {
     InvalidBytesLength,
 
     #[error(transparent)]
-    SignatureError(alloy::primitives::SignatureError),
-
-    #[error(transparent)]
-    AlloySolError(alloy::sol_types::Error),
+    SignatureError(alloy_primitives::SignatureError),
 
     #[error("must set origin")]
     MustSetOrigin,
