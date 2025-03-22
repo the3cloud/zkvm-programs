@@ -4,7 +4,6 @@ use crate::request;
 
 pub fn entry(input: &[u8]) -> Vec<u8> {
     let input: GuestInput = ciborium::from_reader(input).expect("Failed to parse input from cbor");
-
     entry_input(input)
 }
 
