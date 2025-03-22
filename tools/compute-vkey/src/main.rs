@@ -10,7 +10,8 @@ fn main() {
 
     let bytes = fs::read(path).unwrap();
 
-    let client = ProverClient::mock();
+    std::env::set_var("SP1_PROVER", "mock");
+    let client = ProverClient::from_env();
 
     let (_, vkey) = client.setup(&bytes);
 
