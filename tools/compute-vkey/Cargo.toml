@@ -4,4 +4,4 @@ edition.workspace = true
 version.workspace = true
 
 [dependencies]
-sp1-sdk = "3.4.0"
+sp1-sdk = "4.1.4"
