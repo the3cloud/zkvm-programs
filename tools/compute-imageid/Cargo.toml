@@ -4,4 +4,4 @@ edition.workspace = true
 version.workspace = true
 
 [dependencies]
-risc0-zkvm = "=1.1.4"
+risc0-zkvm = "1.2.5"
