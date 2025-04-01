@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 zktls-replayable-tls = { version = "0.1.0", path = "../../crates/zktls/replayable-tls" }
 
-sp1-zkvm = "4.1.3"
+sp1-zkvm = { version = "4.1.3" }
 
 [workspace]
 
