@@ -35,13 +35,6 @@ impl ResponseTemplate {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct RequestClient {
-    pub client: Address,
-    pub max_gas_price: u64,
-    pub max_gas_limit: u64,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestInfo {
     pub request: Bytes,
     pub remote_addr: String,
@@ -53,7 +46,7 @@ pub struct Request {
     pub request_info: RequestInfo,
     pub response_template: Vec<ResponseTemplate>,
     pub origin: Origin,
-    pub client: RequestClient,
+    pub client: Address,
 }
 
 impl Request {
@@ -76,9 +69,7 @@ impl Request {
             hasher.update(template.as_bytes());
         }
 
-        hasher.update(self.client.client);
-        hasher.update(self.client.max_gas_price.to_be_bytes());
-        hasher.update(self.client.max_gas_limit.to_be_bytes());
+        hasher.update(self.client);
 
         hasher.finalize()
     }
@@ -127,8 +118,6 @@ pub struct Response {
     pub request_id: B256,
     pub client: Address,
     pub dapp: B256,
-    pub max_gas_price: u64,
-    pub max_gas_limit: u64,
     #[serde(default)]
     pub proof: Bytes,
     #[serde(default)]
@@ -140,10 +129,8 @@ impl Response {
         Ok(Self {
             response,
             request_id: request.request_id()?,
-            client: request.client.client,
+            client: request.client,
             dapp: request.dapp()?,
-            max_gas_price: request.client.max_gas_price,
-            max_gas_limit: request.client.max_gas_limit,
             proof: Default::default(),
             prover_id: Default::default(),
         })
