@@ -2,7 +2,7 @@
 
 # TODO: Add check for `cargo` `cargo prove`, `cargo risczero` and `docker`
 
-RISC0_TLS_ELF_PATH=target/riscv-guest/riscv32im-risc0-zkvm-elf/docker/zktls_r0/zktls-r0
+RISC0_TLS_ELF_PATH=zktls/r0/target/riscv32im-risc0-zkvm-elf/docker/zktls-r0.bin
 SP1_TLS_ELF_PATH=zktls/sp1/target/elf-compilation/docker/riscv32im-succinct-zkvm-elf/release/zktls-sp1
 
 TARGET_ELF_OUTPUTS_PATH=./target/elf-outputs

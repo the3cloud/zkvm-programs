@@ -1538,13 +1538,12 @@ checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 [[package]]
 name = "p256"
 version = "0.13.2"
-source = "git+https://github.com/risc0/RustCrypto-elliptic-curves?tag=p256%2Fv0.13.2-risczero.1#bb0f51ad3ba81585f36ea8a1ea81093d8664b195"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c9863ad85fa8f4460f9c48cb909d38a0d689dba1f6f6988a5e3e0d31071bcd4b"
 dependencies = [
- "bytemuck",
  "ecdsa",
  "elliptic-curve",
- "primeorder 0.13.1",
- "risc0-bigint2",
+ "primeorder",
  "sha2",
 ]
 
@@ -1556,7 +1555,7 @@ checksum = "fe42f1670a52a47d448f14b6a5c61dd78fce51856e68edaa38f7ae3a46b8d6b6"
 dependencies = [
  "ecdsa",
  "elliptic-curve",
- "primeorder 0.13.6",
+ "primeorder",
  "sha2",
 ]
 
@@ -1700,16 +1699,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85eae3c4ed2f50dcfe72643da4befc30deadb458a9b590d720cde2f2b1e97da9"
 dependencies = [
  "zerocopy 0.8.25",
-]
-
-[[package]]
-name = "primeorder"
-version = "0.13.1"
-source = "git+https://github.com/risc0/RustCrypto-elliptic-curves?tag=p256%2Fv0.13.2-risczero.1#bb0f51ad3ba81585f36ea8a1ea81093d8664b195"
-dependencies = [
- "bytemuck",
- "elliptic-curve",
- "risc0-bigint2",
 ]
 
 [[package]]
@@ -1894,16 +1883,6 @@ dependencies = [
  "libc",
  "untrusted",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "risc0-bigint2"
-version = "1.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "921e2d3d07a327750f657c0d42cf9437024583b218ad05b24b91a557f5d01979"
-dependencies = [
- "include_bytes_aligned",
- "stability",
 ]
 
 [[package]]
@@ -2895,7 +2874,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-program-core"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "alloy-primitives",
  "log",
@@ -2906,7 +2885,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-r0"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "bytemuck_derive",
  "risc0-zkvm",
@@ -2916,7 +2895,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "alloy-primitives",
  "ciborium",
@@ -2929,7 +2908,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls-provider"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "bytes",
  "log",
@@ -2940,13 +2919,3 @@ dependencies = [
  "webpki-roots",
  "zktls-program-core",
 ]
-
-[[patch.unused]]
-name = "k256"
-version = "0.13.3"
-source = "git+https://github.com/risc0/RustCrypto-elliptic-curves?tag=k256%2Fv0.13.3-risczero.1#ff5d67b095cfcc2569b7789f2079ed87ef2c7756"
-
-[[patch.unused]]
-name = "rsa"
-version = "0.9.6"
-source = "git+https://github.com/risc0/RustCrypto-RSA?tag=v0.9.6-risczero.0#cb42fd295c096c6dddd8386cd57b122add8d0cbc"

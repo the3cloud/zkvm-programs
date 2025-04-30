@@ -2239,7 +2239,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-program-core"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "alloy-primitives",
  "log",
@@ -2250,7 +2250,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "alloy-primitives",
  "ciborium",
@@ -2263,7 +2263,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls-provider"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "bytes",
  "log",
@@ -2277,7 +2277,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-sp1"
-version = "0.1.1"
+version = "0.2.1"
 dependencies = [
  "sp1-zkvm",
  "zktls-replayable-tls",
