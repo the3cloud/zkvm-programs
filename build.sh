@@ -11,13 +11,13 @@ R0_TLS_ELF_FILENAME=zktls-r0
 
 cargo build --release || exit 1
 
+echo "Building zktls-r0"
+cargo risczero build --manifest-path zktls/r0/Cargo.toml || exit 1
+
 echo "Building zktls-sp1"
 cd zktls/sp1 || exit 1
 cargo prove build --docker --workspace-directory ../../ || exit 1
 cd ../../ || exit 1
-
-echo "Building zktls-r0"
-cargo risczero build --manifest-path zktls/r0/Cargo.toml || exit 1
 
 echo "Creating elf outputs"
 
