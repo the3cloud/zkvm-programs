@@ -47,6 +47,7 @@ pub struct Request {
     pub response_template: Vec<ResponseTemplate>,
     pub origin: Origin,
     pub client: Address,
+    pub prover_id: B256,
 }
 
 impl Request {
@@ -120,7 +121,6 @@ pub struct Response {
     pub dapp: B256,
     #[serde(default)]
     pub proof: Bytes,
-    #[serde(default)]
     pub prover_id: B256,
 }
 
@@ -132,7 +132,7 @@ impl Response {
             client: request.client,
             dapp: request.dapp()?,
             proof: Default::default(),
-            prover_id: Default::default(),
+            prover_id: request.prover_id,
         })
     }
 }

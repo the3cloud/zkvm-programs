@@ -1,28 +1,25 @@
 {
-    "request_info": {
-        "request": "0x",
-        "remote_addr": "httpbin.org:443",
-        "server_name": "httpbin.org"
+  "request_info": {
+    "request": "0x",
+    "remote_addr": "httpbin.org:443",
+    "server_name": "httpbin.org"
+  },
+  "response_template": [
+    {
+      "type": "offset",
+      "begin": 123,
+      "length": 456
     },
-    "response_template": [
-        {
-            "type": "offset",
-            "begin": 123,
-            "length": 456
-        },
-        {
-            "type": "regex",
-            "pattern": ".*"
-        }
-    ],
-    "origin": {
-        "type": "secp256k1",
-        "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-        "nonce": 0
-    },
-    "client": {
-        "client": "0x0000000000000000000000000000000000000000",
-        "max_gas_price": 1000000000000000,
-        "max_gas_limit": 1000000000000000
+    {
+      "type": "regex",
+      "pattern": ".*"
     }
+  ],
+  "origin": {
+    "type": "secp256k1",
+    "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "nonce": 0
+  },
+  "client": "0x0000000000000000000000000000000000000000",
+  "prover_id": "0x22e28d930774bcf50ea18f4a11ff04b6c456012a6257e35b7a70d5f6c4e18711"
 }
