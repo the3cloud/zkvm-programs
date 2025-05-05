@@ -7616,3 +7616,13 @@ dependencies = [
  "webpki-roots",
  "zktls-program-core",
 ]
+
+[[package]]
+name = "zkvm-tool"
+version = "0.2.1"
+dependencies = [
+ "alloy-primitives 0.8.25",
+ "clap",
+ "serde_json",
+ "zktls-program-core",
+]

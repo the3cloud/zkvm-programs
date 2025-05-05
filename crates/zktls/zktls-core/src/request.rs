@@ -8,7 +8,7 @@ use crate::{Error, Origin, Result};
 #[serde(rename_all = "camelCase")]
 pub enum ResponseTemplate {
     Offset { begin: u64, length: u64 },
-    Regex { pattern: String },
+    Prefix { prefix: Bytes, length: u64 },
 }
 
 impl ResponseTemplate {
@@ -22,12 +22,13 @@ impl ResponseTemplate {
                 res.extend_from_slice(&length.to_be_bytes());
                 res
             }
-            ResponseTemplate::Regex { pattern } => {
+            ResponseTemplate::Prefix { prefix, length } => {
                 let mut res = Vec::new();
                 res.push(0u8);
                 res.push(2u8);
-                res.push(pattern.len() as u8);
-                res.extend_from_slice(pattern.as_bytes());
+                res.push(prefix.len() as u8);
+                res.extend_from_slice(prefix.as_ref());
+                res.extend_from_slice(&length.to_be_bytes());
                 res
             }
         }
