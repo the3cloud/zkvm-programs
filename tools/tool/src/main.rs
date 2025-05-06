@@ -1,6 +1,7 @@
 use alloy_primitives::{Address, B256};
 use clap::Parser;
-use zktls_program_core::{Origin, Request, RequestInfo, ResponseTemplate};
+use k256::{ecdsa::SigningKey, SecretKey};
+use zktls_program_core::{Origin, Request, RequestInfo, ResponseTemplate, Secp256k1Origin};
 
 #[derive(Debug, Parser)]
 struct Args {
@@ -68,7 +69,7 @@ fn main() {
                 });
             }
 
-            let request = Request {
+            let mut request = Request {
                 request_info,
                 response_template,
                 origin: Origin::None,
@@ -77,6 +78,28 @@ fn main() {
             };
 
             let request_hash = request.request_hash();
+
+            // Convert the secp256k1_key to k256 SecretKey
+            let secret_key = SecretKey::from_bytes(&secp256k1_key.0.into()).unwrap();
+            let signing_key = SigningKey::from(secret_key);
+
+            // Sign the request hash with recoverable signature
+            let (signed, recovery_id) = signing_key
+                .sign_prehash_recoverable(&request_hash.0)
+                .unwrap();
+
+            let mut signature = [0u8; 65];
+
+            // Convert signature to bytes and add recovery byte
+            signature[..64].copy_from_slice(&signed.to_bytes());
+            signature[64] = recovery_id.to_byte();
+
+            let origin = Origin::Secp256k1(Secp256k1Origin {
+                signature: signature.into(),
+                nonce: 0,
+            });
+
+            request.origin = origin;
 
             // println!("request_hash: {}", request_hash);
             println!("{}", serde_json::to_string(&request).unwrap());
