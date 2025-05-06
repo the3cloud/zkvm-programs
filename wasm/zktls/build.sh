@@ -12,4 +12,4 @@ mv pkg/zktls-0.2.2.tgz pkg/zktls-nodejs.tgz
 
 wasm-pack build --target bundler --release || exit 1
 wasm-pack pack || exit 1
-mv pkg/zktls-0.2.1.tgz pkg/zktls-bundler.tgz
+mv pkg/zktls-0.2.2.tgz pkg/zktls-bundler.tgz
