@@ -1,4 +1,4 @@
-use alloy_primitives::{keccak256, normalize_v, FixedBytes, PrimitiveSignature, B256};
+use alloy_primitives::{normalize_v, Address, FixedBytes, PrimitiveSignature, B256};
 use serde::{Deserialize, Serialize};
 
 use crate::{Error, Result};
@@ -34,7 +34,7 @@ pub struct Secp256k1Origin {
 }
 
 impl Secp256k1Origin {
-    pub fn dapp(&self, hash: B256) -> Result<B256> {
+    pub fn dapp(&self, hash: B256) -> Result<Address> {
         let v = self.signature[64];
 
         let v = normalize_v(v as u64).ok_or(Error::InvalidNormalizeV)?;
@@ -45,11 +45,7 @@ impl Secp256k1Origin {
             .recover_from_prehash(&hash)
             .map_err(Error::SignatureError)?;
 
-        let bytes = address.to_sec1_bytes();
-
-        let bb = keccak256(bytes);
-
-        Ok(B256::from(bb))
+        Ok(Address::from_public_key(&address))
     }
 }
 
@@ -71,7 +67,7 @@ impl Origin {
         }
     }
 
-    pub fn dapp(&self, hash: B256) -> Result<B256> {
+    pub fn dapp(&self, hash: B256) -> Result<Address> {
         match self {
             Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
             // Origin::ApiKey(e) => Ok(e.dapp()),

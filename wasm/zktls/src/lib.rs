@@ -31,7 +31,7 @@ impl Request {
         Ok(id.to_vec().into_boxed_slice())
     }
 
-    pub fn dapp(&self) -> Result<Box<[u8]>, JsValue> {
+    pub fn dapp_public_key(&self) -> Result<Box<[u8]>, JsValue> {
         let dapp = self
             .request
             .dapp()

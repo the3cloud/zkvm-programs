@@ -1566,14 +1566,14 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 
 [[package]]
 name = "compute-imageid"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "risc0-zkvm",
 ]
 
 [[package]]
 name = "compute-vkey"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "sp1-sdk",
 ]
@@ -7567,7 +7567,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-program-core"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "alloy-primitives 0.8.25",
  "env_logger",
@@ -7580,7 +7580,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-recordable-tls-provider"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "once_cell",
  "rand_core 0.6.4",
@@ -7591,7 +7591,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "alloy-primitives 0.8.25",
  "ciborium",
@@ -7605,7 +7605,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls-provider"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "bytes",
  "log",
@@ -7619,10 +7619,12 @@ dependencies = [
 
 [[package]]
 name = "zkvm-tool"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "alloy-primitives 0.8.25",
+ "anyhow",
  "clap",
+ "hex",
  "k256",
  "serde_json",
  "zktls-program-core",

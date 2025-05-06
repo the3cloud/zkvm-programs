@@ -111,7 +111,7 @@ impl Request {
         }
     }
 
-    pub fn dapp(&self) -> Result<B256> {
+    pub fn dapp(&self) -> Result<Address> {
         match &self.origin {
             Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
             // Origin::ApiKey(f) => Ok(f.dapp()),
@@ -125,7 +125,7 @@ pub struct Response {
     pub response: Vec<Bytes>,
     pub request_id: B256,
     pub target: RequestTarget,
-    pub dapp: B256,
+    pub dapp_public_key: Address,
     #[serde(default)]
     pub proof: Bytes,
 }
@@ -136,7 +136,7 @@ impl Response {
             response,
             request_id: request.request_id()?,
             target: request.target.clone(),
-            dapp: request.dapp()?,
+            dapp_public_key: request.dapp()?,
             proof: Default::default(),
         })
     }
