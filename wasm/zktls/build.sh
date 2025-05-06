@@ -4,11 +4,11 @@ set -e
 
 wasm-pack build --target web --release || exit 1
 wasm-pack pack || exit 1
-mv pkg/zktls-0.2.1.tgz pkg/zktls-web.tgz
+mv pkg/zktls-0.2.2.tgz pkg/zktls-web.tgz
 
 wasm-pack build --target nodejs --release || exit 1
 wasm-pack pack || exit 1
-mv pkg/zktls-0.2.1.tgz pkg/zktls-nodejs.tgz
+mv pkg/zktls-0.2.2.tgz pkg/zktls-nodejs.tgz
 
 wasm-pack build --target bundler --release || exit 1
 wasm-pack pack || exit 1

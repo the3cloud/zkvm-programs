@@ -43,15 +43,24 @@ pub struct RequestInfo {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Request {
-    pub request_info: RequestInfo,
-    pub response_template: Vec<ResponseTemplate>,
-    pub origin: Origin,
+pub struct RequestTarget {
     pub client: Address,
     pub prover_id: B256,
+    pub submit_network_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Request {
+    pub version: u8,
+    pub request_info: RequestInfo,
+    pub response_template: Vec<ResponseTemplate>,
+    pub target: RequestTarget,
+    pub origin: Origin,
 }
 
 impl Request {
+    pub const VERSION: u8 = 1;
+
     /// this function must be called used internal appid
     pub fn set_appid(&mut self, appid: &[u8]) {
         if let Origin::ApiKey(f) = &mut self.origin {
@@ -63,6 +72,7 @@ impl Request {
     pub fn request_hash(&self) -> B256 {
         let mut hasher = alloy_primitives::Keccak256::new();
 
+        hasher.update(&self.version.to_le_bytes());
         hasher.update(&self.request_info.request);
         hasher.update(self.request_info.remote_addr.as_bytes());
         hasher.update(self.request_info.server_name.as_bytes());
@@ -71,7 +81,9 @@ impl Request {
             hasher.update(template.as_bytes());
         }
 
-        hasher.update(self.client);
+        hasher.update(self.target.client);
+        hasher.update(self.target.prover_id);
+        hasher.update(&self.target.submit_network_id.to_le_bytes());
 
         hasher.finalize()
     }
@@ -118,11 +130,10 @@ impl Request {
 pub struct Response {
     pub response: Vec<Bytes>,
     pub request_id: B256,
-    pub client: Address,
+    pub target: RequestTarget,
     pub dapp: B256,
     #[serde(default)]
     pub proof: Bytes,
-    pub prover_id: B256,
 }
 
 impl Response {
@@ -130,10 +141,9 @@ impl Response {
         Ok(Self {
             response,
             request_id: request.request_id()?,
-            client: request.client,
+            target: request.target.clone(),
             dapp: request.dapp()?,
             proof: Default::default(),
-            prover_id: request.prover_id,
         })
     }
 }

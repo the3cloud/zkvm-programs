@@ -1,7 +1,9 @@
 use alloy_primitives::{Address, B256};
 use clap::Parser;
 use k256::{ecdsa::SigningKey, SecretKey};
-use zktls_program_core::{Origin, Request, RequestInfo, ResponseTemplate, Secp256k1Origin};
+use zktls_program_core::{
+    Origin, Request, RequestInfo, RequestTarget, ResponseTemplate, Secp256k1Origin,
+};
 
 #[derive(Debug, Parser)]
 struct Args {
@@ -12,6 +14,9 @@ struct Args {
 #[derive(Debug, Parser)]
 enum SubCmd {
     Sign {
+        #[clap(long = "version", default_value_t = Request::VERSION)]
+        version: u8,
+
         #[clap(long = "request.body")]
         request_body: String,
 
@@ -27,11 +32,14 @@ enum SubCmd {
         #[clap(long = "response.prefix.length")]
         response_prefix_length: Vec<u32>,
 
-        #[clap(long = "client")]
+        #[clap(long = "target.client")]
         client: Address,
 
-        #[clap(long = "prover-id")]
+        #[clap(long = "target.prover-id")]
         prover_id: B256,
+
+        #[clap(long = "target.submit-network-id")]
+        submit_network_id: u64,
 
         #[clap(long = "secp256k1.key")]
         secp256k1_key: B256,
@@ -43,6 +51,7 @@ fn main() {
 
     match args.subcmd {
         SubCmd::Sign {
+            version,
             request_body,
             request_addr,
             request_server,
@@ -50,6 +59,7 @@ fn main() {
             response_prefix_length,
             client,
             prover_id,
+            submit_network_id,
             secp256k1_key,
         } => {
             let request_info = RequestInfo {
@@ -73,8 +83,12 @@ fn main() {
                 request_info,
                 response_template,
                 origin: Origin::None,
-                client,
-                prover_id,
+                target: RequestTarget {
+                    client,
+                    prover_id,
+                    submit_network_id,
+                },
+                version,
             };
 
             let request_hash = request.request_hash();

@@ -1,6 +1,6 @@
 [package]
 name = "zktls"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["steve-the3cloud <steve@the3.cloud>"]
 edition = "2018"
 
