@@ -61,14 +61,6 @@ pub struct Request {
 impl Request {
     pub const VERSION: u8 = 1;
 
-    /// this function must be called used internal appid
-    pub fn set_appid(&mut self, appid: &[u8]) {
-        if let Origin::ApiKey(f) = &mut self.origin {
-            let salt = keccak256(appid);
-            f.salt = salt;
-        }
-    }
-
     pub fn request_hash(&self) -> B256 {
         let mut hasher = alloy_primitives::Keccak256::new();
 
@@ -83,44 +75,46 @@ impl Request {
 
         hasher.update(self.target.client);
         hasher.update(self.target.prover_id);
-        hasher.update(&self.target.submit_network_id.to_le_bytes());
+        hasher.update(&self.target.submit_network_id.to_be_bytes());
+
+        hasher.update(self.origin.nonce().to_be_bytes());
 
         hasher.finalize()
     }
 
-    fn apikey_request_id(&self) -> Result<B256> {
-        let request_hash = self.request_hash();
+    // fn apikey_request_id(&self) -> Result<B256> {
+    //     let request_hash = self.request_hash();
 
-        let mut res = Vec::with_capacity(20 + 32 + 8);
+    //     let mut res = Vec::with_capacity(20 + 32 + 8);
 
-        res.extend_from_slice(self.dapp()?.as_slice());
-        res.extend_from_slice(request_hash.as_slice());
-        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
+    //     res.extend_from_slice(self.dapp()?.as_slice());
+    //     res.extend_from_slice(request_hash.as_slice());
+    //     res.extend_from_slice(&self.origin.nonce().to_be_bytes());
 
-        Ok(keccak256(&res))
-    }
+    //     Ok(keccak256(&res))
+    // }
 
     fn secp256k1_request_id(&self) -> Result<B256> {
         let mut res = Vec::with_capacity(20 + 8);
 
         res.extend_from_slice(self.dapp()?.as_slice());
-        res.extend_from_slice(&self.origin.nonce()?.to_be_bytes());
+        res.extend_from_slice(&self.origin.nonce().to_be_bytes());
 
         Ok(keccak256(&res))
     }
 
     pub fn request_id(&self) -> Result<B256> {
         match &self.origin {
-            Origin::None => Err(Error::MustSetOrigin),
-            Origin::ApiKey(_) => self.apikey_request_id(),
+            Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
+            // Origin::ApiKey(_) => self.apikey_request_id(),
             Origin::Secp256k1(_) => self.secp256k1_request_id(),
         }
     }
 
     pub fn dapp(&self) -> Result<B256> {
         match &self.origin {
-            Origin::None => Err(Error::MustSetOrigin),
-            Origin::ApiKey(f) => Ok(f.dapp()),
+            Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
+            // Origin::ApiKey(f) => Ok(f.dapp()),
             Origin::Secp256k1(f) => Ok(f.dapp(self.request_hash())?),
         }
     }

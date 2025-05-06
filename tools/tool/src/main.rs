@@ -43,6 +43,9 @@ enum SubCmd {
 
         #[clap(long = "secp256k1.key")]
         secp256k1_key: B256,
+
+        #[clap(long = "nonce")]
+        nonce: u64,
     },
 }
 
@@ -61,6 +64,7 @@ fn main() {
             prover_id,
             submit_network_id,
             secp256k1_key,
+            nonce,
         } => {
             let request_info = RequestInfo {
                 request: request_body.into(),
@@ -82,7 +86,7 @@ fn main() {
             let mut request = Request {
                 request_info,
                 response_template,
-                origin: Origin::None,
+                origin: Origin::None { nonce },
                 target: RequestTarget {
                     client,
                     prover_id,
