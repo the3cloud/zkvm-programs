@@ -114,7 +114,7 @@ fn main() {
 
             let origin = Origin::Secp256k1(Secp256k1Origin {
                 signature: signature.into(),
-                nonce: 0,
+                nonce,
             });
 
             request.origin = origin;

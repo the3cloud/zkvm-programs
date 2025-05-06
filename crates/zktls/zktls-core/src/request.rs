@@ -151,9 +151,15 @@ mod tests {
         extern crate std;
 
         let request_s = include_str!("../testdata/request.json");
-
         let request: Request = serde_json::from_str(request_s).unwrap();
+        std::println!("{:?}", request.dapp());
 
-        std::println!("{:?}", request);
+        let request_s1 = include_str!("../testdata/request1.json");
+        let request1: Request = serde_json::from_str(request_s1).unwrap();
+        std::println!("{:?}", request1.dapp());
+
+        let request_s2 = include_str!("../testdata/request2.json");
+        let request2: Request = serde_json::from_str(request_s2).unwrap();
+        std::println!("{:?}", request2.dapp());
     }
 }
