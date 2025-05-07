@@ -97,7 +97,7 @@ impl Request {
     fn secp256k1_request_id(&self) -> Result<B256> {
         let mut res = Vec::with_capacity(20 + 8);
 
-        res.extend_from_slice(self.dapp()?.as_slice());
+        res.extend_from_slice(self.dapp_address()?.as_slice());
         res.extend_from_slice(&self.origin.nonce().to_be_bytes());
 
         Ok(keccak256(&res))
@@ -111,11 +111,11 @@ impl Request {
         }
     }
 
-    pub fn dapp(&self) -> Result<Address> {
+    pub fn dapp_address(&self) -> Result<Address> {
         match &self.origin {
             Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
             // Origin::ApiKey(f) => Ok(f.dapp()),
-            Origin::Secp256k1(f) => Ok(f.dapp(self.request_hash())?),
+            Origin::Secp256k1(f) => Ok(f.dapp_address(self.request_hash())?),
         }
     }
 }
@@ -125,7 +125,7 @@ pub struct Response {
     pub response: Vec<Bytes>,
     pub request_id: B256,
     pub target: RequestTarget,
-    pub dapp_public_key: Address,
+    pub dapp_address: Address,
     #[serde(default)]
     pub proof: Bytes,
 }
@@ -136,9 +136,39 @@ impl Response {
             response,
             request_id: request.request_id()?,
             target: request.target.clone(),
-            dapp_public_key: request.dapp()?,
+            dapp_address: request.dapp_address()?,
             proof: Default::default(),
         })
+    }
+
+    pub const BYTES_VERSION: u8 = 1;
+
+    /// build response to bytes.
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let mut res = Vec::with_capacity(114);
+
+        res.push(Self::BYTES_VERSION);
+        res.extend_from_slice(self.request_id.as_slice());
+        res.extend_from_slice(self.dapp_address.as_slice());
+        res.extend_from_slice(self.target.client.as_slice());
+        res.extend_from_slice(self.target.prover_id.as_slice());
+        res.extend_from_slice(&self.target.submit_network_id.to_be_bytes());
+
+        res.push(self.response.len() as u8);
+
+        let mut offset = 0u32;
+
+        for response in &self.response {
+            let len = response.len() as u32;
+            res.extend_from_slice(&offset.to_be_bytes());
+            offset += len;
+        }
+
+        for response in &self.response {
+            res.extend_from_slice(response);
+        }
+
+        res
     }
 }
 
@@ -152,14 +182,37 @@ mod tests {
 
         let request_s = include_str!("../testdata/request.json");
         let request: Request = serde_json::from_str(request_s).unwrap();
-        std::println!("{:?}", request.dapp());
+        std::println!("{:?}", request.dapp_address());
 
         let request_s1 = include_str!("../testdata/request1.json");
         let request1: Request = serde_json::from_str(request_s1).unwrap();
-        std::println!("{:?}", request1.dapp());
+        std::println!("{:?}", request1.dapp_address());
 
         let request_s2 = include_str!("../testdata/request2.json");
         let request2: Request = serde_json::from_str(request_s2).unwrap();
-        std::println!("{:?}", request2.dapp());
+        std::println!("{:?}", request2.dapp_address());
+    }
+
+    #[test]
+    fn test_response_to_bytes() {
+        let request_s = include_str!("../testdata/request.json");
+        let request: Request = serde_json::from_str(request_s).unwrap();
+
+        println!("{:?}", request);
+        println!("{:?}", request.request_id());
+        println!("{:?}", request.dapp_address());
+
+        let response = Response::from_request(
+            &request,
+            vec![
+                Bytes::from("hello"),
+                Bytes::from("world"),
+                Bytes::from("hello123"),
+                Bytes::from("world123"),
+            ],
+        )
+        .unwrap();
+        let bytes = response.to_bytes();
+        std::println!("{:?}", alloy_primitives::hex::encode(bytes));
     }
 }

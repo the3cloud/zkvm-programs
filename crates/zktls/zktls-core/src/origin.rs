@@ -34,7 +34,7 @@ pub struct Secp256k1Origin {
 }
 
 impl Secp256k1Origin {
-    pub fn dapp(&self, hash: B256) -> Result<Address> {
+    pub fn dapp_address(&self, hash: B256) -> Result<Address> {
         let v = self.signature[64];
 
         let v = normalize_v(v as u64).ok_or(Error::InvalidNormalizeV)?;
@@ -67,11 +67,11 @@ impl Origin {
         }
     }
 
-    pub fn dapp(&self, hash: B256) -> Result<Address> {
+    pub fn dapp_address(&self, hash: B256) -> Result<Address> {
         match self {
             Origin::None { nonce: _ } => Err(Error::MustSetOrigin),
             // Origin::ApiKey(e) => Ok(e.dapp()),
-            Origin::Secp256k1(e) => e.dapp(hash),
+            Origin::Secp256k1(e) => e.dapp_address(hash),
         }
     }
 }

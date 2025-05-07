@@ -14,3 +14,20 @@
 | SP1     | 0x004c7630602168208eae1ac6576dbc3c7a8c2e3d324df6fb24a6526ff5e9e550 | 0.2.1   |              |         |
 | RISC0   | 0xb7f2915b438f589b6b92b39e3a9659de2a729cf3796616ed4ced33e8c1c1787f | 0.1.0   |              |         |
 | SP1     | 0x00661155bb9d14fc2b93615553e0672f7c51bb50ba466745b9d160d2cfc54d92 | 0.1.0   |              |         |
+
+## Formats
+
+### Format for guest output
+
+Format:
+
+| Name                     | Size                 | Begin | End                        |
+| ------------------------ | -------------------- | ----- | -------------------------- |
+| request_id               | 32                   | 0     | 32                         |
+| dapp_address             | 20                   | 32    | 52                         |
+| target.client            | 20                   | 52    | 72                         |
+| target.prover_id         | 32                   | 72    | 104                        |
+| target.submit_network_id | 8                    | 104   | 112                        |
+| response_count           | 1                    | 113   | 113                        |
+| response_offset          | `response_count * 4` | 113   | `113 + response_count * 4` |
+| response_data            |                      |       |                            |
