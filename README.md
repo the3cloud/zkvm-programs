@@ -4,8 +4,10 @@
 
 | Runtime | Program VKey                                                       | Version | Program Size | Comment |
 | ------- | ------------------------------------------------------------------ | ------- | ------------ | ------- |
-| RISC0   | 0x8be00c31573c98425e355bdd2ac0e70036515d8cc73f4742c359bec410b565ac | 0.2.4   | 2876KB       | latest  |
-| SP1     | 0x0074281e35ce833e79554471a73f3db5de869ae49cce547c31669522edf0a85e | 0.2.4   | 2753KB       | latest  |
+| RISC0   | 0x0dd7d4bd4fc2e5f754664cdfd335d2d276fa96ff0cb0b240c7803ed7a85afaa8 | 0.2.5   | 2874KB       | latest  |
+| SP1     | 0x000edfeaace35a8e3d190ddff5d71f9bc6191ee26491f4e6ed298080cbbbb5a9 | 0.2.5   | 2750KB       | latest  |
+| RISC0   | 0x8be00c31573c98425e355bdd2ac0e70036515d8cc73f4742c359bec410b565ac | 0.2.4   | 2876KB       |         |
+| SP1     | 0x0074281e35ce833e79554471a73f3db5de869ae49cce547c31669522edf0a85e | 0.2.4   | 2753KB       |         |
 | RISC0   | 0xcb3ac8c2da6d6324df113b4d3b10a2e849e8d33a89c0f9c238bd209faae4aa70 | 0.2.3   | 2.9M         |         |
 | SP1     | 0x000d6157daffd80a7f53c3da61732641d584121447ff833685881e613256cf4b | 0.2.3   | 2.7M         |         |
 | RISC0   | 0x2ecde6b5b5dd826bc567bb4ba28621c119acb3f19f8a0a702893a76250d6a037 | 0.2.2   |              |         |
@@ -23,11 +25,12 @@ Format:
 
 | Name                     | Size                 | Begin | End                        |
 | ------------------------ | -------------------- | ----- | -------------------------- |
-| request_id               | 32                   | 0     | 32                         |
-| dapp_address             | 20                   | 32    | 52                         |
-| target.client            | 20                   | 52    | 72                         |
-| target.prover_id         | 32                   | 72    | 104                        |
-| target.submit_network_id | 8                    | 104   | 112                        |
+| version                  | 1                    | 0     | 1                          |
+| request_id               | 32                   | 1     | 33                         |
+| dapp_address             | 20                   | 33    | 53                         |
+| target.client            | 20                   | 53    | 73                         |
+| target.prover_id         | 32                   | 73    | 105                        |
+| target.submit_network_id | 8                    | 105   | 113                        |
 | response_count           | 1                    | 113   | 113                        |
 | response_offset          | `response_count * 4` | 113   | `113 + response_count * 4` |
 | response_data            |                      |       |                            |

@@ -2874,7 +2874,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-program-core"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "alloy-primitives",
  "log",
@@ -2885,7 +2885,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-r0"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "bytemuck_derive",
  "risc0-zkvm",
@@ -2895,7 +2895,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "alloy-primitives",
  "ciborium",
@@ -2908,7 +2908,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-replayable-tls-provider"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "bytes",
  "log",

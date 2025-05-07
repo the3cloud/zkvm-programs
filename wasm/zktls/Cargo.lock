@@ -1715,7 +1715,7 @@ dependencies = [
 
 [[package]]
 name = "zktls"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "console_error_panic_hook",
  "getrandom 0.2.15",
@@ -1727,7 +1727,7 @@ dependencies = [
 
 [[package]]
 name = "zktls-program-core"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "alloy-primitives",
  "log",

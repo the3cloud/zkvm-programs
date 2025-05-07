@@ -31,10 +31,10 @@ impl Request {
         Ok(id.to_vec().into_boxed_slice())
     }
 
-    pub fn dapp_public_key(&self) -> Result<Box<[u8]>, JsValue> {
+    pub fn dapp_address(&self) -> Result<Box<[u8]>, JsValue> {
         let dapp = self
             .request
-            .dapp()
+            .dapp_address()
             .map_err(|e| JsValue::from(e.to_string()))?;
         Ok(dapp.to_vec().into_boxed_slice())
     }
