@@ -42,10 +42,6 @@ pub fn execute(request: Request, response: GuestInputResponse) -> Response {
     let mut buf = Vec::with_capacity(response.response.len());
     tls.read_to_end(&mut buf).expect("Failed to read data");
 
-    // TODO: Add with capacity;
-    let mut serialized_request = Vec::new();
-    ciborium::into_writer(&request, &mut serialized_request).expect("Failed to serialize request");
-
     // TODO: Match response in buf;
     let response_bytes = response.filtered_responses;
 

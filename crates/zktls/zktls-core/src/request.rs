@@ -126,8 +126,6 @@ pub struct Response {
     pub request_id: B256,
     pub target: RequestTarget,
     pub dapp_address: Address,
-    #[serde(default)]
-    pub proof: Bytes,
 }
 
 impl Response {
@@ -137,7 +135,6 @@ impl Response {
             request_id: request.request_id()?,
             target: request.target.clone(),
             dapp_address: request.dapp_address()?,
-            proof: Default::default(),
         })
     }
 

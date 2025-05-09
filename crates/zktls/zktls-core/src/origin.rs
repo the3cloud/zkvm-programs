@@ -1,4 +1,4 @@
-use alloy_primitives::{normalize_v, Address, FixedBytes, PrimitiveSignature, B256};
+use alloy_primitives::{normalize_v, Address, FixedBytes, Signature, B256};
 use serde::{Deserialize, Serialize};
 
 use crate::{Error, Result};
@@ -39,7 +39,7 @@ impl Secp256k1Origin {
 
         let v = normalize_v(v as u64).ok_or(Error::InvalidNormalizeV)?;
 
-        let signature = PrimitiveSignature::from_bytes_and_parity(self.signature.as_slice(), v);
+        let signature = Signature::from_bytes_and_parity(self.signature.as_slice(), v);
 
         let address = signature
             .recover_from_prehash(&hash)

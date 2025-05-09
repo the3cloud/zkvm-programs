@@ -45,7 +45,7 @@ pub struct Sign {
 impl Sign {
     pub fn run(self) -> Result<()> {
         let request_info = RequestInfo {
-            request: self.request_body.into(),
+            request: self.request_body.as_bytes().to_vec().into(),
             remote_addr: self.request_addr.into(),
             server_name: self.request_server.into(),
         };
@@ -57,7 +57,7 @@ impl Sign {
             .zip(self.response_prefix_length.iter())
         {
             response_template.push(ResponseTemplate::Prefix {
-                prefix: prefix.into(),
+                prefix: prefix.as_bytes().to_vec().into(),
                 length: *length as u64,
             });
         }
